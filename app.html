@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricketMath - calculator</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #0f1512; color: #edf6ef; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  main { max-width: 760px; padding: 32px 20px 48px; width: 100%; box-sizing: border-box; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; }
+  p.sub { color: #c6dcc9; margin: 0 0 20px; }
+  .card { background: #152019; border: 1px solid #284535; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .card h2 { margin: 0 0 12px; font-size: 1.05rem; color: #d9ecdd; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; }
+  label { display: block; color: #a9c4ae; font-size: 0.82rem; margin-bottom: 4px; }
+  input { width: 100%; box-sizing: border-box; background: #0f1512; border: 1px solid #35573f; color: #edf6ef; border-radius: 8px; padding: 9px 10px; font-size: 0.95rem; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .presets button { background: #1a2b1f; color: #e0f0e4; border: 1px solid #35573f; border-radius: 999px; padding: 7px 14px; font-size: 0.85rem; cursor: pointer; }
+  .presets button:hover { background: #284535; }
+  .out { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .metric { background: #0f1512; border: 1px solid #284535; border-radius: 10px; padding: 12px 14px; }
+  .metric .v { font-size: 1.3rem; font-weight: 700; color: #74d99a; }
+  .metric .k { color: #a9c4ae; font-size: 0.78rem; margin-top: 2px; }
+  .note { color: #8aa892; font-size: 0.82rem; line-height: 1.5; margin-top: 10px; }
+  a.back { color: #74d99a; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>&#127951; CricketMath</h1>
+  <p class="sub">The scorecard, translated.</p>
+  <div class="presets">
+    <button data-p="chase">The chase</button>
+    <button data-p="spell">A tight spell</button>
+    <button data-p="career">Career numbers</button>
+    <button data-p="collapse">The collapse</button>
+  </div>
+  <div class="card">
+    <h2>1. Batting</h2>
+    <div class="grid">
+      <div><label>Runs</label><input id="bruns" type="number" value="8200" min="0"></div>
+      <div><label>Balls faced</label><input id="bballs" type="number" value="9500" min="0"></div>
+      <div><label>Times dismissed</label><input id="dismissals" type="number" value="350" min="0"></div>
+    </div>
+    <div class="out" style="margin-top:12px">
+      <div class="metric"><div class="v" id="o-bavg">-</div><div class="k">Batting average (per dismissal)</div></div>
+      <div class="metric"><div class="v" id="o-bsr">-</div><div class="k">Strike rate (per 100 balls)</div></div>
+      <div class="metric"><div class="v" id="o-srband">-</div><div class="k">Honest band</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>2. Bowling</h2>
+    <div class="grid">
+      <div><label>Runs conceded</label><input id="pruns" type="number" value="4500" min="0"></div>
+      <div><label>Overs (whole)</label><input id="povers" type="number" value="1033" min="0"></div>
+      <div><label>Extra balls (0-5)</label><input id="pballs" type="number" value="2" min="0" max="5"></div>
+      <div><label>Wickets</label><input id="wkts" type="number" value="180" min="0"></div>
+    </div>
+    <div class="out" style="margin-top:12px">
+      <div class="metric"><div class="v" id="o-pavg">-</div><div class="k">Bowling average</div></div>
+      <div class="metric"><div class="v" id="o-econ">-</div><div class="k">Economy per over</div></div>
+      <div class="metric"><div class="v" id="o-psr">-</div><div class="k">Strike rate (balls/wicket)</div></div>
+      <div class="metric"><div class="v" id="o-econband">-</div><div class="k">T20 economy band</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>3. The chase</h2>
+    <div class="grid">
+      <div><label>Target</label><input id="target" type="number" value="281" min="0"></div>
+      <div><label>Current score</label><input id="score" type="number" value="165" min="0"></div>
+      <div><label>Overs bowled so far (whole)</label><input id="cover" type="number" value="20" min="0"></div>
+      <div><label>Extra balls (0-5)</label><input id="cball" type="number" value="0" min="0" max="5"></div>
+      <div><label>Innings length (overs)</label><input id="quota" type="number" value="50" min="1"></div>
+    </div>
+    <div class="out" style="margin-top:12px">
+      <div class="metric"><div class="v" id="o-crr">-</div><div class="k">Current run rate</div></div>
+      <div class="metric"><div class="v" id="o-rrr">-</div><div class="k">Required run rate</div></div>
+      <div class="metric"><div class="v" id="o-proj">-</div><div class="k">Projected score at this pace</div></div>
+      <div class="metric"><div class="v" id="o-verdict">-</div><div class="k">The honest read</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>4. Net run rate</h2>
+    <div class="grid">
+      <div><label>Runs scored</label><input id="nfor" type="number" value="250" min="0"></div>
+      <div><label>Overs faced (whole)</label><input id="nfo" type="number" value="50" min="0"></div>
+      <div><label>Extra balls faced (0-5)</label><input id="nfb" type="number" value="0" min="0" max="5"></div>
+      <div><label>All out?</label><input id="nfallout" type="number" value="0" min="0" max="1" title="1 = bowled out early, charged full quota"></div>
+      <div><label>Runs conceded</label><input id="nagainst" type="number" value="200" min="0"></div>
+      <div><label>Overs bowled (whole)</label><input id="nao" type="number" value="48" min="0"></div>
+      <div><label>Extra balls bowled (0-5)</label><input id="nab" type="number" value="2" min="0" max="5"></div>
+      <div><label>Match quota (overs)</label><input id="nquota" type="number" value="50" min="1"></div>
+    </div>
+    <div class="out" style="margin-top:12px">
+      <div class="metric"><div class="v" id="o-nrr">-</div><div class="k">Net run rate</div></div>
+    </div>
+    <p class="note">Set "All out?" to 1 when the batting side was bowled out early: NRR charges them the full match quota of overs, not the overs they survived. It is the rule that has ended tournament campaigns.</p>
+  </div>
+  <p><a class="back" href="index.html">&larr; Back to CricketMath</a></p>
+</main>
+<script src="engine.js"></script>
+<script>
+(function () {
+  var ids = ['bruns','bballs','dismissals','pruns','povers','pballs','wkts','target','score','cover','cball','quota','nfor','nfo','nfb','nfallout','nagainst','nao','nab','nquota'];
+  function num(id) { var v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : 0; }
+  function compute() {
+    if (typeof CricketMath === 'undefined') return;
+    document.getElementById('o-bavg').textContent = CricketMath.fmt2(CricketMath.battingAverage(num('bruns'), num('dismissals')));
+    var bsr = CricketMath.battingStrikeRate(num('bruns'), num('bballs'));
+    document.getElementById('o-bsr').textContent = CricketMath.fmt2(bsr);
+    document.getElementById('o-srband').textContent = bsr === null ? '-' : CricketMath.strikeRateBand(bsr);
+
+    var pballs = CricketMath.ballsFromOvers(num('povers'), num('pballs'));
+    document.getElementById('o-pavg').textContent = CricketMath.fmt2(CricketMath.bowlingAverage(num('pruns'), num('wkts')));
+    var econ = pballs === null ? null : CricketMath.economyRate(num('pruns'), pballs);
+    document.getElementById('o-econ').textContent = CricketMath.fmt2(econ);
+    document.getElementById('o-psr').textContent = CricketMath.fmt2(pballs === null ? null : CricketMath.bowlingStrikeRate(pballs, num('wkts')));
+    document.getElementById('o-econband').textContent = econ === null ? '-' : CricketMath.economyBandT20(econ);
+
+    var faced = CricketMath.ballsFromOvers(num('cover'), num('cball'));
+    var quotaBalls = num('quota') * 6;
+    var remaining = quotaBalls - (faced || 0);
+    var crr = faced ? CricketMath.currentRunRate(num('score'), faced) : null;
+    document.getElementById('o-crr').textContent = CricketMath.fmt2(crr);
+    var rrr = faced === null ? null : CricketMath.requiredRunRate(num('target'), num('score'), remaining);
+    document.getElementById('o-rrr').textContent = rrr === null ? '-' : CricketMath.fmt2(rrr);
+    var proj = crr === null ? null : CricketMath.projectedScore(num('score'), crr, remaining);
+    document.getElementById('o-proj').textContent = proj === null ? '-' : Math.round(proj);
+    var v = '-';
+    if (crr !== null && rrr !== null) {
+      if (rrr === 0) v = 'won already - the rest is ceremony';
+      else if (rrr <= crr) v = 'on pace - keep the rate, keep the wickets';
+      else if (rrr <= crr * 1.35) v = 'gettable, but someone has to change gears';
+      else v = 'the rate says trouble - this needs a collapse in reverse';
+    }
+    document.getElementById('o-verdict').textContent = v;
+
+    var fb = CricketMath.ballsFromOvers(num('nfo'), num('nfb'));
+    var ab = CricketMath.ballsFromOvers(num('nao'), num('nab'));
+    var allOut = num('nfallout') === 1;
+    var nrr = (fb === null || ab === null) ? null : CricketMath.netRunRate(
+      num('nfor'), fb, num('nagainst'), ab,
+      allOut ? {allOutFor: true, quotaBallsFor: num('nquota') * 6} : {});
+    document.getElementById('o-nrr').textContent = nrr === null ? '-' : (nrr >= 0 ? '+' : '') + nrr.toFixed(3);
+  }
+  var presets = {
+    chase:    {target:281, score:165, cover:20, cball:0, quota:50, bruns:8200, bballs:9500, dismissals:350, pruns:4500, povers:1033, pballs:2, wkts:180, nfor:250, nfo:50, nfb:0, nfallout:0, nagainst:200, nao:48, nab:2, nquota:50},
+    spell:    {target:160, score:88, cover:12, cball:0, quota:20, bruns:1480, bballs:1200, dismissals:32, pruns:14, povers:3, pballs:4, wkts:3, nfor:145, nfo:19, nfb:2, nfallout:0, nagainst:128, nao:20, nab:0, nquota:20},
+    career:   {target:281, score:165, cover:20, cball:0, quota:50, bruns:8200, bballs:9500, dismissals:350, pruns:4500, povers:1033, pballs:2, wkts:180, nfor:250, nfo:50, nfb:0, nfallout:0, nagainst:200, nao:48, nab:2, nquota:50},
+    collapse: {target:250, score:180, cover:40, cball:0, quota:50, bruns:3200, bballs:4100, dismissals:150, pruns:4500, povers:1033, pballs:2, wkts:180, nfor:180, nfo:40, nfb:0, nfallout:1, nagainst:250, nao:50, nab:0, nquota:50}
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('.presets button'), function (b) {
+    b.addEventListener('click', function () {
+      var p = presets[b.getAttribute('data-p')];
+      if (!p) return;
+      Object.keys(p).forEach(function (k) { document.getElementById(k).value = p[k]; });
+      compute();
+    });
+  });
+  ids.forEach(function (id) {
+    document.getElementById(id).addEventListener('input', compute);
+    document.getElementById(id).addEventListener('change', compute);
+  });
+  compute();
+})();
+</script>
+</body>
+</html>
